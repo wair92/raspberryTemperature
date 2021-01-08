@@ -1,11 +1,12 @@
 #ifndef TEMPERATURE_H
 #define TEMPERATURE_H
+#include <optional>
 
 class Temperature{
 public:
-  int readTemperature();
   void readTemperatureWorker();
-private:
+  std::optional<int> readTemperature();
+  bool checkCRC(const std::string& line);
 };
 
 #endif
