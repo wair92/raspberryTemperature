@@ -10,18 +10,6 @@ void Backup::backupWorker()
 {
   std::cout << "Backup activated" << std::endl;
 	while(true){
-		bool time_not_corrected = true;
-		while(time_not_corrected){
-			auto hour = TimeFormat::getCurrentHour();
-      std::cout << hour << " " << Config::getInstance().getValue("backupHour") << std::endl;
-			if(hour == Config::getInstance().getValue("backupHour")){
-				time_not_corrected = false;
-				break;
-			}
-			else
-				std::this_thread::sleep_for(std::chrono::hours(1));
-		}
-
 		auto data_file_for_backup = Config::getInstance().getValue("dataLocation")
      + TimeFormat::getLastDayStamp() + ".txt";
 		copy_backup_file(Config::getInstance().getValue("backupDirectory"), data_file_for_backup );
@@ -32,7 +20,14 @@ void Backup::backupWorker()
     command += " ";
     command += Config::getInstance().getValue("dataLocation");
     command += " ";
-    command += TimeFormat::getLastDayStamp();
+    auto hour = TimeFormat::getCurrentHour();
+    if(hour == Config::getInstance().getValue("backupHour")){
+      command += TimeFormat::getLastDayStamp();
+    }
+    else{
+      command += TimeFormat::getCurrentDaystamp();
+    }
+
 		system(command.c_str());
 
     std::cout << command << std::endl;
@@ -41,7 +36,7 @@ void Backup::backupWorker()
      + TimeFormat::getLastDayStamp() + ".png";
 		copy_backup_file( Config::getInstance().getValue("backupDirectory"), picture_file_for_backup );
 
-		std::this_thread::sleep_for(std::chrono::hours(24));
+		std::this_thread::sleep_for(std::chrono::hours(1));
 	}
 	return;
 }
