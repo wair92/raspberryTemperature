@@ -31,8 +31,8 @@ y_max = max(y2)
 x_max = y2.index(max(y2))
 x_min = y2.index(min(y2))
 
-line1, = plt.plot( dates, y, color="lightgray", label='Measured')
-line2, = plt.plot( dates, y2, color="green", label='7 Average')
+line1, = plt.plot( dates, y, marker='o', markersize=2, ls='', color="lightgray", label='Measured')
+line2, = plt.plot( dates, y2, marker='o', markersize=2, ls='', color="green", label='7 Average')
 max_point, = plt.plot( [dates[x_max]], [y_max], "ro", label='Max')
 min_point, = plt.plot( [dates[x_min]], [y_min], "bo", label='Min')
 
