@@ -7,32 +7,21 @@
 #include "temperature.h"
 #include "config.h"
 #include "timeformat.h"
+#include "parser.h"
 std::optional<int> Temperature::readTemperature()
 {
   std::string file_path = Config::getInstance().getValue("sensorPath");
 	std::string line;
 	std::ifstream temperature_file(file_path);
-	auto retVal = 0;
-
-	std::string delimiter = "t=";
-	std::string token;
+	auto retVal = std::optional<int>();
+  
 	if(temperature_file.is_open()){
       getline(temperature_file, line);
       if(!checkCRC(line)){
         return std::nullopt;
       }
 		  getline( temperature_file, line);
-			std::cout << line << std::endl;
-			auto start = 0U;
-			auto end = line.find(delimiter);
-			while( end != std::string::npos){
-				token = line.substr(start, end - start);
-				start = end + delimiter.length();
-				end = line.find(delimiter, start);
-			}
-			auto temperature =  line.substr(start, end);
-			if(!temperature.empty())
-				retVal = std::stoi(temperature);
+      retVal = Parser::parseTemperature(line);
 
 		temperature_file.close();
 	}

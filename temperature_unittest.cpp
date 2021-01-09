@@ -19,11 +19,6 @@ TEST(checkCRCTest, Negative) {
 
 }  // namespace
 
-int main(int argc, char **argv) {
-  ::testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
-}
-
 // Step 3. Call RUN_ALL_TESTS() in main().
 //
 // We do this by linking in src/gtest_main.cc file, which consists of

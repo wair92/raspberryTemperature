@@ -8,13 +8,17 @@ OBJS =  \
  config.o \
  temperature.o \
  timeformat.o \
+ parser.o \
  main.o \
 
 TEST_OBJS = \
  	temperature_unittest.o \
+	parser_unittest.o \
 	temperature.o \
 	config.o \
 	timeformat.o \
+	parser.o \
+	unittest_main.o \
 
 # Here is a Make Macro defined by two Macro Expansions.
 # A Macro Expansion may be treated as a textual replacement of the Make Macro.
