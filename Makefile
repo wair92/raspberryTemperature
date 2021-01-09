@@ -1,5 +1,6 @@
 
 LINK_TARGET = temperature.bin
+TEST_TARGET = run_tests.bin
 
 # Here is a Make Macro that uses the backslash to extend to multiple lines.
 OBJS =  \
@@ -9,10 +10,16 @@ OBJS =  \
  timeformat.o \
  main.o \
 
+TEST_OBJS = \
+ 	temperature_unittest.o \
+	temperature.o \
+	config.o \
+	timeformat.o \
+
 # Here is a Make Macro defined by two Macro Expansions.
 # A Macro Expansion may be treated as a textual replacement of the Make Macro.
 # Macro Expansions are introduced with $ and enclosed in (parentheses).
-REBUILDABLES = $(OBJS) $(LINK_TARGET)
+REBUILDABLES = $(OBJS) $(LINK_TARGET) $(TEST_TARGET) $(TEST_OBJS)
 
 # Here is a simple Rule (used for "cleaning" your build environment).
 # It has a Target named "clean" (left of the colon ":" on the first line),
@@ -31,7 +38,7 @@ clean :
 # The rule for "all" is used to incrementally build your system.
 # It does this by expressing a dependency on the results of that system,
 # which in turn have their own rules and dependencies.
-all : $(LINK_TARGET)
+all : $(LINK_TARGET) $(TEST_TARGET)
 	echo All done
 
 # There is no required order to the list of rules as they appear in the Makefile.
@@ -44,6 +51,9 @@ all : $(LINK_TARGET)
 # main.o, test1.o, and  test2.o.
 $(LINK_TARGET) : $(OBJS)
 	gcc -g -o $@ $^ -lstdc++ -lpthread
+
+$(TEST_TARGET) : $(TEST_OBJS)
+	gcc -g -o $@ $^ -lstdc++ -lpthread -lgtest
 
 # Here is a Pattern Rule, often used for compile-line.
 # It says how to create a file with a .o suffix, given a file with a .cpp suffix.
