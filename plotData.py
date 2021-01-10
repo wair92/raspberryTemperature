@@ -15,7 +15,7 @@ def average7( data ):
             i = i + 1
             element = element + float( data [x - y])
         element = element / i;
-        retVal.append( str(element) )
+        retVal.append( element )
     return retVal;
 
 with open(sys.argv[1] + sys.argv[2] + ".txt") as f:
