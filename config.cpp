@@ -1,28 +1,18 @@
 #include "config.h"
+#include "parser.h"
 #include <map>
 #include <iostream>
 #include <fstream>
-
+#include <optional>
+#include <utility>
 Config::Config(const std::string& configFileName ){
   std::ifstream configFile( configFileName );
   if(configFile.is_open()){
-    std::string delimiter = "=";
-    std::string line = "";
+      std::string line = "";
   		while(getline( configFile, line)){
-        if(line.empty())
-          continue;
-        if(line[0] == '#')
-          continue;
-  			auto start = 0U;
-  			auto end = line.find(delimiter);
-  			while( end != std::string::npos){
-  				//token = line.substr(start, end - start);
-  				start = end + delimiter.length();
-  				end = line.find(delimiter, start);
-  			}
-        auto value =  line.substr(start, end);
-        auto parameter = line.substr(0, start - 1);
-        config_.insert({ parameter, value });
+      std::optional<std::pair<std::string, std::string>> insertion = Parser::parseConfig(line);
+      if(insertion)
+        config_.insert(*insertion);
   	}
     configFile.close();
   }

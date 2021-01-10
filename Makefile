@@ -65,4 +65,4 @@ $(TEST_TARGET) : $(TEST_OBJS)
 # $@ for the pattern-matched target
 # $< for the pattern-matched dependency
 %.o : %.cpp
-	gcc -g -o $@ -c $< -std=c++20
+	gcc -g -o $@ -c $< -std=c++2a
