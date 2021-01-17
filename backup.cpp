@@ -10,10 +10,6 @@ void Backup::backupWorker()
 {
   std::cout << "Backup activated" << std::endl;
 	while(true){
-		auto data_file_for_backup = Config::getInstance().getValue("dataLocation")
-     + TimeFormat::getLastDayStamp() + ".txt";
-		copy_backup_file(Config::getInstance().getValue("backupDirectory"), data_file_for_backup );
-
 		auto filename = Config::getInstance().getValue("plotScriptPath");
 		std::string command = "python ";
 		command += filename;
@@ -33,10 +29,10 @@ void Backup::backupWorker()
     std::cout << command << std::endl;
 
 		std::string picture_file_for_backup = Config::getInstance().getValue("dataLocation")
-     + TimeFormat::getLastDayStamp() + ".png";
+     + TimeFormat::getCurrentDaystamp() + ".png";
 		copy_backup_file( Config::getInstance().getValue("backupDirectory"), picture_file_for_backup );
 
-		std::this_thread::sleep_for(std::chrono::hours(1));
+		std::this_thread::sleep_for(std::chrono::minutes(5));
 	}
 	return;
 }
@@ -45,8 +41,8 @@ void Backup::copy_backup_file(const std::string& backupPath,
 {
   std::cout << "Copying file " << file_for_backup << " to: " << backupPath << std::endl;
 	std::ifstream src ( file_for_backup, std::ios::binary);
-	std::ofstream dst( backupPath + TimeFormat::getLastDayStamp() + ".txt",
-    std::ios::binary | std::fstream::app);
+	std::ofstream dst( backupPath + TimeFormat::getCurrentDaystamp() + ".png",
+    std::ios::binary | std::ofstream::trunc);
 	dst << src.rdbuf();
 	return;
 }
